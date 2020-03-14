@@ -17,18 +17,20 @@ import {
   StatusBar,
 } from 'react-native';
 import faker from 'faker';
-
+import {getStatusBarHeight} from 'react-native-iphone-x-helper';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 const startupNamesList = new Array(1000)
   .fill(null)
-  .map((item, idx) => ({id: idx, name: faker.company.companyName()}));
+  .map((_, idx) => ({id: idx, name: faker.company.companyName()}));
 
 const App: () => React$Node = () => {
-  console.log(startupNamesList);
   return (
     <>
-      <StatusBar barStyle="dark-content" />
+      <StatusBar barStyle="dark-content" color="#4696EC" />
+      <View style={styles.header}>
+        <Text style={styles.headerText}>React Native List</Text>
+      </View>
       <SafeAreaView>
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
@@ -67,6 +69,18 @@ const styles = StyleSheet.create({
     marginLeft: 12,
     marginRight: 12,
     backgroundColor: '#DCDEDC',
+  },
+  header: {
+    height: 64 + getStatusBarHeight(),
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#4696EC',
+    paddingTop: getStatusBarHeight(),
+  },
+  headerText: {
+    fontSize: 17,
+    fontWeight: '600',
+    color: '#ffffff',
   },
 });
 
