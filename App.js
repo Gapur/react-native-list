@@ -13,18 +13,19 @@ import {
   ScrollView,
   View,
   Text,
+  FlatList,
   StatusBar,
 } from 'react-native';
+import faker from 'faker';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
+
+const startupNamesList = new Array(1000)
+  .fill(null)
+  .map((item, idx) => ({id: idx, name: faker.company.companyName()}));
 
 const App: () => React$Node = () => {
+  console.log(startupNamesList);
   return (
     <>
       <StatusBar barStyle="dark-content" />
@@ -32,40 +33,16 @@ const App: () => React$Node = () => {
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
+          <FlatList
+            data={startupNamesList}
+            renderItem={({item}) => (
+              <View style={styles.item}>
+                <Text style={styles.title}>{item.name}</Text>
+              </View>
+            )}
+            keyExtractor={item => item.id}
+            ItemSeparatorComponent={() => <View style={styles.separator} />}
+          />
         </ScrollView>
       </SafeAreaView>
     </>
@@ -75,39 +52,21 @@ const App: () => React$Node = () => {
 const styles = StyleSheet.create({
   scrollView: {
     backgroundColor: Colors.lighter,
+    marginTop: StatusBar.currentHeight,
   },
-  engine: {
-    position: 'absolute',
-    right: 0,
+  item: {
+    padding: 16,
+    marginVertical: 8,
+    marginHorizontal: 12,
   },
-  body: {
-    backgroundColor: Colors.white,
+  title: {
+    fontSize: 16,
   },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
+  separator: {
+    height: 1,
+    marginLeft: 12,
+    marginRight: 12,
+    backgroundColor: '#DCDEDC',
   },
 });
 
